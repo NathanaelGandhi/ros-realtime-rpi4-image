@@ -3,13 +3,10 @@
 jammy-rt-rolling:
 	sudo ./ros-rt-img build jammy-rt jammy-rt-rolling
 
-jammy-rt-ros2:
-	sudo ./ros-rt-img build jammy-rt jammy-rt-humble
-
 # TODO: eventually the build.py should be a command line script that takes
 #       arguments
-focal-rt-ros2:
-	sudo ./ros-rt-img build focal-rt focal-rt-galactic
+jammy-rt-ros2:
+	sudo ./ros-rt-img build jammy-rt jammy-rt-humble
 
 clean:
 	sudo ./ros-rt-img teardown

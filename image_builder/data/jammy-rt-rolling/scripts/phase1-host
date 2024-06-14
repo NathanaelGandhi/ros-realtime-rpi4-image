@@ -2,4 +2,4 @@
 
 set -e -o pipefail
 
-apt install python3-common-colcon-extensions
+apt-get install python3-common-colcon-extensions

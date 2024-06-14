@@ -16,6 +16,7 @@ if [ ! grep -q "^deb .*ros2/ubuntu" /etc/apt/sources.list.d/ros2.list 2>/dev/nul
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
     # update the package list
     sudo apt-get update
+    apt-get install -y ros-$ROS_DISTRO-ros-base
 fi
 
 set -e # Immediate exit on error. Note: will cause checks that fail to exit prematurely
@@ -31,19 +32,19 @@ set -o pipefail # exit on error & pipeline reliability
 if [ ! -f /etc/apt/sources.list.d/ros2.list ]; then
     # ensure software-properties-common is installed
     if ! dpkg-query -W -f='${Status}' software-properties-common 2>/dev/null | grep -q "ok installed"; then
-        sudo apt-get install software-properties-common -y
+        apt-get install software-properties-common -y
     fi
     # ensure the Universe repository is enabled
     if ! grep -q "^deb .*\ universe" /etc/apt/sources.list /etc/apt/sources.list.d/*.list; then
-        sudo add-apt-repository universe
+        add-apt-repository universe
     fi
     # ensure apt-utils is installed (for curl)
     if ! command -v apt-utils > /dev/null 2>&1; then
-        sudo apt-get install curl -y
+        apt-get install curl -y
     fi
     # ensure curl is installed (for GPG key)
     if ! command -v curl > /dev/null 2>&1; then
-        sudo apt-get install curl -y
+        apt-get install curl -y
     fi
     # ensure the ROS 2 GPG key exists
     if [ ! -f /usr/share/keyrings/ros-archive-keyring.gpg ]; then
@@ -51,14 +52,14 @@ if [ ! -f /etc/apt/sources.list.d/ros2.list ]; then
     fi
     # add the ROS 2 repository
     echo "adding the ROS 2 repository"
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null
     # update the package list
-    sudo apt-get update
-    sudo apt-get install ros-dev-tools -y
+    apt-get update
+    apt-get install ros-rolling-ros-base -y
 fi
 
 set -e # Immediate exit on error. Note: will cause checks that fail to exit prematurely
-
+apt-get update
 apt-get install python3-common-colcon-extensions
 
 
